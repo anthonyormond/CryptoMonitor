@@ -1,8 +1,8 @@
 [
   {
-    "ContainingType": "CryptoMonitor.Api.Controllers.MoedasController",
-    "Method": "GetBySymbol",
-    "RelativePath": "api/Moedas/{simbolo}",
+    "ContainingType": "CryptoMonitor.Api.Controllers.MoedaController",
+    "Method": "GetPreco",
+    "RelativePath": "api/Moeda/{simbolo}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -13,17 +13,7 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": [
-      {
-        "Type": "CryptoMonitor.Api.Models.Moeda",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
+    "ReturnTypes": []
   },
   {
     "ContainingType": "CryptoMonitor.Api.Controllers.WeatherForecastController",

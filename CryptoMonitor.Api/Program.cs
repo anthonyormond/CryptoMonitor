@@ -1,22 +1,23 @@
+using CryptoMonitor.Api.Repositories;
+using CryptoMonitor.Api.Repositories.Interfaces;
+using CryptoMonitor.Api.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+
+builder.Services.AddHttpClient<IMoedaRepository, MoedaApiRepository>((sp, client) =>
+{
+    var config = sp.GetRequiredService<IConfiguration>();
+    var baseUrl = config["Binance:BaseUrl"];
+    client.BaseAddress = new Uri(baseUrl);
+});
+
+builder.Services.AddScoped<IMoedaService, MoedaService>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-}
-
-//app.UseHttpsRedirection();
-
-app.UseAuthorization();
+app.UseHttpsRedirection();
 
 app.MapControllers();
 

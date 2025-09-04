@@ -4,31 +4,30 @@ using System.Text.Json;
 
 namespace CryptoMonitor.Api.Repositories
 {
-    public class MoedaApiRepository
+    
+    public class MoedaApiRepository : IMoedaRepository
     {
-        public class MoedaRepository : IMoedaRepository
+        private readonly HttpClient _httpClient;
+
+        public MoedaApiRepository(HttpClient httpClient)
         {
-            private readonly HttpClient _httpClient;
+            _httpClient = httpClient;
+        }
 
-            public MoedaRepository(HttpClient httpClient)
+        public async Task<decimal?> GetPrecoAsync(string simbolo)
+        {
+            try
             {
-                _httpClient = httpClient;
+
+                var response = await _httpClient.GetStringAsync($"ticker/price?symbol={simbolo}USDT");
+                using var doc = JsonDocument.Parse(response);
+                return decimal.Parse(doc.RootElement.GetProperty("price").GetString());
             }
-
-            public async Task<decimal?> GetPrecoAsync(string simbolo)
+            catch
             {
-                try
-                {
-                    var url = $"https://api.binance.com/api/v3/ticker/price?symbol={simbolo}USDT";
-                    var response = await _httpClient.GetStringAsync(url);
-                    using var doc = JsonDocument.Parse(response);
-                    return decimal.Parse(doc.RootElement.GetProperty("price").GetString());
-                }
-                catch
-                {
-                    return null;
-                }
+                return null;
             }
         }
     }
+    
 }
